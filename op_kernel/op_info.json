@@ -1,0 +1,129 @@
+[
+    {
+        "op": "MoeRoutingTopK",
+        "language": "cpp",
+        "input_desc": [
+            {
+                "name": "x",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            },
+            {
+                "name": "w_gate",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            }
+        ],
+        "output_desc": [
+            {
+                "name": "expert_ids",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["int32"]
+            },
+            {
+                "name": "weights",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            }
+        ],
+        "attr": [
+            {
+                "name": "topK",
+                "type": "int",
+                "default_value": "2"
+            }
+        ],
+        "soc_version": ["ascend910b"]
+    },
+    {
+        "op": "MoeExpertFFN",
+        "language": "cpp",
+        "input_desc": [
+            {
+                "name": "x",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            },
+            {
+                "name": "expert_ids",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["int32"]
+            },
+            {
+                "name": "weights",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            },
+            {
+                "name": "expert_weights",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"],
+                "description": "3D tensor [numExperts, 3*intermediateSize, hiddenSize]: gate+up+down weights"
+            }
+        ],
+        "output_desc": [
+            {
+                "name": "expert_out",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            }
+        ],
+        "attr": [
+            {
+                "name": "intermediateSize",
+                "type": "int",
+                "default_value": "8192"
+            }
+        ],
+        "soc_version": ["ascend910b"]
+    },
+    {
+        "op": "MoeCombine",
+        "language": "cpp",
+        "input_desc": [
+            {
+                "name": "expert_out",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            },
+            {
+                "name": "expert_ids",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["int32"]
+            },
+            {
+                "name": "weights",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            }
+        ],
+        "output_desc": [
+            {
+                "name": "y",
+                "param_type": "required",
+                "format": ["ND"],
+                "type": ["fp16"]
+            }
+        ],
+        "attr": [
+            {
+                "name": "topK",
+                "type": "int",
+                "default_value": "2"
+            }
+        ],
+        "soc_version": ["ascend910b"]
+    }
+]

@@ -1,0 +1,33 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "default",
+            "displayName": "Default Config",
+            "description": "默认编译配置，需根据本机 CANN 安装路径调整 ASCEND_CANN_PACKAGE_PATH",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/build_out",
+                "ASCEND_CANN_PACKAGE_PATH": {
+                    "type": "PATH",
+                    "value": "/usr/local/Ascend/ascend-toolkit/latest"
+                },
+                "ASCEND_SOC_VERSION": {
+                    "type": "STRING",
+                    "value": "ascend910b"
+                },
+                "ENABLE_OPP_CACHE": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default"
+        }
+    ]
+}
