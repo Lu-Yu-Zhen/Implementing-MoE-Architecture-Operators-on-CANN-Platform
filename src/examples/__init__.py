@@ -1,0 +1,1 @@
+"""Examples of using MoE operators on CANN platform."""
